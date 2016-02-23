@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple video summary</title>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+
+<h1>{{video.title}}</h1>
+{{additionalData.views_total}} Views
+<br>
+
+<a ng-href="{{additionalData.url}}" target="_blank">
+    <img ng-src="{{additionalData.thumbnail_240_url}}"/>
+</a>
+<br>
+{{additionalData.duration}} seconds
+<br>
+View the console to see the full Dailymotion object.
+
+More info about the Data API <a href="https://developer.dailymotion.com/api#graph-api" target="_blank">here</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="../iron-dailymotion-embed.js"></script>
+
+<script>
+    angular.module('myApp', ['ironDailymotionEmbed']).controller('myController', function ($scope, $log, ironDailymotionService) {
+        ironDailymotionService.getVideo('x3t51vv').then(function (data) {
+            $scope.video = data;
+            $log.info($scope.video);
+        });
+        ironDailymotionService.getVideo('x3t51vv', ['url','duration', 'thumbnail_240_url', 'views_total']).then(function (data) {
+            $scope.additionalData = data;
+            $log.info(data)
+        });
+    });
+</script>
+</body>
+</html>

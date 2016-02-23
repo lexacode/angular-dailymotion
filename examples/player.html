@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple player API Use</title>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+
+<iron-dailymotion-embed video-id="'x3syq3p'" player="lePlayer"></iron-dailymotion-embed>
+<br>
+
+<button ng-click="play()">Play</button>
+<button ng-click="pause()">Pause</button>
+<button ng-click="setFullscreen()">Enters Fullscreen mode</button>
+<button ng-click="seek(20)">Go to second 20</button>
+<br>
+<br>
+Status: {{status}}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="../iron-dailymotion-embed.js"></script>
+
+<script>
+    angular.module('myApp', ['ironDailymotionEmbed']).controller('myController', function ($scope) {
+        $scope.play = function () {
+            $scope.lePlayer.play();
+        };
+        $scope.pause = function () {
+            $scope.lePlayer.pause();
+        };
+        $scope.setFullscreen = function () {
+            $scope.lePlayer.setFullscreen(true);
+        };
+        $scope.seek = function (seconds) {
+            $scope.lePlayer.seek(seconds);
+        };
+        $scope.$on('dailymotion.player.ready', function () {
+            $scope.status = 'The video is ready!';
+        });
+        $scope.$on('dailymotion.player.play', function () {
+            $scope.status = 'The video has started!';
+        });
+        $scope.$on('dailymotion.player.pause', function () {
+            $scope.status = 'The video has been stopped';
+        });
+    });
+</script>
+</body>
+</html>
