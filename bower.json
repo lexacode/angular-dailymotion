@@ -1,6 +1,6 @@
 {
   "name": "iron-dailymotion-embed",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A utility resource for embed Dailymotion videos",
   "authors": [
     "Axel Navarro <navarroaxel@gmail.com>"
