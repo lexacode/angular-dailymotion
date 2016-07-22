@@ -6,7 +6,11 @@
 </head>
 <body ng-app="myApp" ng-controller="myController">
 
-<iron-dailymotion-embed video-id="'x3syq3p'" player="lePlayer"></iron-dailymotion-embed>
+<iron-dailymotion-embed video-id="'x3syq3p'" player="lePlayer"
+                        on-apiready="onReady(data)"
+                        on-play="onPlay(data)"
+                        on-pause="onPause(data)"
+                        on-end="onEnd(data)"></iron-dailymotion-embed>
 <br>
 
 <button ng-click="play()">Play</button>
@@ -17,7 +21,7 @@
 <br>
 Status: {{status}}
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 <script src="../iron-dailymotion-embed.js"></script>
 
 <script>
@@ -34,15 +38,18 @@ Status: {{status}}
         $scope.seek = function (seconds) {
             $scope.lePlayer.seek(seconds);
         };
-        $scope.$on('dailymotion.player.ready', function () {
+        $scope.onReady = function () {
             $scope.status = 'The video is ready!';
-        });
-        $scope.$on('dailymotion.player.play', function () {
+        };
+        $scope.onPlay = function () {
             $scope.status = 'The video has started!';
-        });
-        $scope.$on('dailymotion.player.pause', function () {
+        };
+        $scope.onPause = function () {
             $scope.status = 'The video has been stopped';
-        });
+        };
+        $scope.onEnd = function () {
+            $scope.status = 'The video has finished!';
+        };
     });
 </script>
 </body>

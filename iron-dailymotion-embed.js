@@ -45,29 +45,36 @@ angular.module('ironDailymotionEmbed', []).factory('ironDailymotionService', ['$
         scope: {},
         bindToController: {
             videoId: '=',
-            player: '=?'
+            player: '=?',
+            onApiready: '&',
+            onPlay: '&',
+            onPause: '&',
+            onEnd: '&',
+            onSeeked: '&'
         },
-        controllerAs: 'vm',
+        controllerAs: '$ctrl',
         controller: ['$element', '$rootScope', 'ironDailymotionService', function ($element, $rootScope, ironDailymotionService) {
-            var vm = this;
+            var $ctrl = this;
             // Load the SDK for use the Player API.
             ironDailymotionService.loadSdk().then(function (DM) {
                 // Exposed player
-                vm.player = DM.player($element[0], {
-                    video: vm.videoId
+                $ctrl.player = DM.player($element[0], {
+                    video: $ctrl.videoId
                 });
 
                 // Register event listeners for next events
                 angular.forEach([
+                    'apiready',
                     'play',
                     'pause',
                     'end',
                     'seeked'
                 ], function (event) {
-                    vm.player.addEventListener(event, function (event) {
+                    $ctrl.player.addEventListener(event, function (event) {
                         // Handle messages received from the player
                         $rootScope.$apply(function () {
-                            $rootScope.$broadcast('dailymotion.player.' + event.type, event);
+                            // converts 'pause' event name to onPause handler name.
+                            $ctrl['on' + event.type.substr(0, 1).toUpperCase() + event.type.substr(1)]({data: event});
                         });
                     });
                 });
